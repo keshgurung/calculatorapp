@@ -2,5 +2,15 @@
 Building a full functional simple calculator with swift and storyboard.
 
 - Create an ios app with storyboard ui
-- create a new view component by clicking on + sifn and selecting view. give bg color -black
-- 
+
+- creating a UI component
+  - creating a label ui for showing results.
+  - creating buttons (4 in a row), making it a stack view,
+  - we can create a stack view inside view too as in last stack where 0 covers 2 positions width.
+  - constrations to be used on main stack for up-down-left-right.
+  - we can use constrations for each stack too, spacing can be given through menu.
+  - for label shoeing result, we made it view and changed bg color same as label and gave constraints for right margin.
+
+- in editor menu, goto assistant to drag and drop items in viewcontroller.
+ - ctrl + drag and give a unique name. 
+ - viewcontroller tab to view all.

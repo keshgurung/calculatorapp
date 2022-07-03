@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  calculator-app
+//  calc
 //
 //  Created by Kesh Gurung on 03/07/2022.
 //
