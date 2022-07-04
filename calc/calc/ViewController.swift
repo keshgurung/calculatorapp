@@ -1,3 +1,4 @@
+
 //
 //  ViewController.swift
 //  calc
@@ -7,129 +8,113 @@
 
 import UIKit
 
+enum Operation: String {
+    case Add = "+"
+    case Subtract = "-"
+    case Divide = "/"
+    case Multiply = "*"
+    case NULL = "Null"
+}
+
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var calculatorResults: UILabel!
     
-    var calcValue: String = ""
+
+    var runningNumber:String = ""
+    var leftValue: String = ""
+    var rightValue: String = ""
+    var result: String = ""
+    var currentOperation: Operation = .NULL
    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        clearAll()
-        // Do any additional setup after loading the view.
+        calculatorResults.text = "0"
+       
+       
     }
 
-    func clearAll(){
-        calcValue = ""
-        calculatorResults.text = ""
+    @IBAction func buttonPressed(_ sender: UIButton) {
+//        allowing only 9 char anf no dot at last cond. on dotButton
+        if runningNumber.count <= 8 {
+        runningNumber += "\(sender.tag-1)"
+         calculatorResults.text = runningNumber
+        }
     }
     
+    func clearAll(){
+         runningNumber = ""
+        calculatorResults.text = "0"
+        leftValue = ""
+        rightValue = ""
+        currentOperation = .NULL
+        result = ""
+    }
+
     @IBAction func allClearButton(_ sender: Any) {
         clearAll()
     }
-    
-    @IBAction func equalsButton(_ sender: Any) {
-       let expression = NSExpression(format: calcValue)
-        
-       let result = expression.expressionValue(with: nil, context: nil) as! Double
-       let resultString = formatResult(result: result)
-        calculatorResults.text = resultString
-        
-        
-    }
-    
-    func formatResult(result: Double) -> String {
-        if (result.truncatingRemainder(dividingBy: 1) == 0){
-            return String(format: "%.0f", result)
-        }
-        else{
-            return String(format: "%.2f", result)
+
+    @IBAction func dotButton(_ sender: Any) {
+        if runningNumber.count <= 7 {
+            runningNumber += "."
+            calculatorResults.text = runningNumber
         }
     }
-    
-    func calcFunctionValue(value: String){
-        calcValue = calcValue + value
-        calculatorResults.text = calcValue
-    }
-    
     
     @IBAction func divideButton(_ sender: Any) {
-        calcFunctionValue(value: "/")
+        operation(operation: .Divide)
     }
     
     
     @IBAction func multiplyButton(_ sender: Any) {
-        calcFunctionValue(value: "*")
+        operation(operation: .Multiply)
     }
-    
     @IBAction func subtractButton(_ sender: Any) {
-        calcFunctionValue(value: "-")
+        operation(operation: .Subtract)
     }
-    
-    
     @IBAction func addButton(_ sender: Any) {
-        calcFunctionValue(value: "+")
-        
+        operation(operation: .Add)
+    }
+    @IBAction func equalButton(_ sender: Any) {
+        operation(operation: currentOperation)
     }
     
-    
-    
-    @IBAction func dotButton(_ sender: Any) {
-        calcFunctionValue(value: ".")
+    func operation(operation: Operation){
+        if currentOperation != .NULL {
+            if runningNumber != ""{
+                
+                rightValue = runningNumber
+                runningNumber = ""
+                
+                if currentOperation == .Add {
+                    result = "\(Double(leftValue)! + Double(rightValue)!)"
+                    
+                }else if currentOperation == .Subtract {
+                    result = "\(Double(leftValue)! - Double(rightValue)!)"
+                    
+                } else if currentOperation == .Multiply {
+                    result = "\(Double(leftValue)! * Double(rightValue)!)"
+                    
+                } else if currentOperation == .Divide{
+                result = "\(Double(leftValue)! / Double(rightValue)!)"
+            
+             }
+//                operation on result after
+                leftValue = result
+                if (Double(result)!.truncatingRemainder(dividingBy: 1) == 0){
+                    result = "\(Int(Double(result)!))"
+                }
+                calculatorResults.text = result
+            }
+            currentOperation = operation
+        }
+            else {
+            leftValue = runningNumber
+            runningNumber = ""
+            currentOperation = operation
+        }
     }
-    
-    
-    @IBAction func zeroButton(_ sender: Any) {
-        calcFunctionValue(value: "0")
-    }
-    
-    
-    
-    
-    @IBAction func oneButton(_ sender: Any) {
-        calcFunctionValue(value: "1")
-    }
-    
-    
-    @IBAction func twoButton(_ sender: Any) {
-        calcFunctionValue(value: "2")
-    }
-    
-    
-    @IBAction func threeButton(_ sender: Any) {
-        calcFunctionValue(value: "3")
-    }
-    
-    
-    
-    
-    @IBAction func fourButton(_ sender: Any) {
-        calcFunctionValue(value: "4")
-    }
-    
-    
-    @IBAction func fiveButton(_ sender: Any) {
-        calcFunctionValue(value: "5")
-    }
-    
-    
-    @IBAction func sixButton(_ sender: Any) {
-        calcFunctionValue(value: "6")
-    }
-    
-    @IBAction func sevenButton(_ sender: Any) {
-        calcFunctionValue(value: "7")
-    }
-    
-    
-    @IBAction func eightButton(_ sender: Any) {
-        calcFunctionValue(value: "8")
-    }
-    
-    @IBAction func nineButton(_ sender: Any) {
-        calcFunctionValue(value: "9")
-    }
-    
 }
-
